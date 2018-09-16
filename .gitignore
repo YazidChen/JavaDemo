@@ -25,3 +25,6 @@ hs_err_pid*
 # IDEA file
 .idea/
 *.iml
+
+# out class file
+out/
