@@ -2,7 +2,6 @@ package com.yazid.demo.java.java.Collection;
 
 import com.yazid.demo.java.java.Collection.model.Item;
 
-import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
