@@ -31,8 +31,6 @@ public class LinkedListDemo {
         System.out.println("listSecond:" + listSecond);
         listIterator.set(second);
         System.out.println("修改第二位值：" + staff);
-
-
     }
 
     public static void main(String[] args) {
