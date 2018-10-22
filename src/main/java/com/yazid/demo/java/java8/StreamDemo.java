@@ -278,13 +278,18 @@ public class StreamDemo {
             list.add(i);
         }
         //创建并行流
-        Stream<Integer> stream = list.parallelStream();
-        Integer[] evenNumbersArr = stream.toArray(Integer[]::new);
+        Stream<Integer> parallelStream = list.parallelStream();
+        Integer[] evenNumbersArr = parallelStream.toArray(Integer[]::new);
         System.out.print(Arrays.toString(evenNumbersArr));
+        System.out.println();
+        System.out.println(parallelStream.isParallel());
+        //sequential()，并行转换为顺序
+        Stream<Integer> stream = parallelStream.sequential();
+        System.out.println(stream.isParallel());
     }
 
     public static void main(String[] args) {
         StreamDemo streamDemo = new StreamDemo();
-        streamDemo.streamCore();
+        streamDemo.parallelStream();
     }
 }
