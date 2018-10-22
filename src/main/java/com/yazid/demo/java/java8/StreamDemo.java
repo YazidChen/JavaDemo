@@ -33,17 +33,34 @@ public class StreamDemo {
         list.forEach(System.out::println);
     }
 
-    private void streamGenerate() {
-        Stream<Date> stream = Stream.generate(Date::new).limit(10);
-        stream.forEach(System.out::println);
-    }
-
-    private void streamStr() {
+    private void strStream() {
         IntStream streamA = "12345_abcdefg".chars();
         streamA.forEach(System.out::println);
 
         Stream<String> streamB = Stream.of("A,B,C,D".split(","));
         streamB.forEach(System.out::println);
+    }
+
+    private void streamGenerate() {
+        Stream<Date> stream = Stream.generate(Date::new).limit(10);
+        stream.forEach(System.out::println);
+    }
+
+    private void streamIterate() {
+        Stream.iterate(1, i -> i + 1).limit(10).forEach(System.out::println);
+    }
+
+    private void streamConcat() {
+        Stream<Integer> stream1 = Stream.of(1, 2, 3);
+        Stream<Integer> stream2 = Stream.of(4, 5);
+        Stream.concat(stream1, stream2).forEach(System.out::println);
+    }
+
+    private void streamBuilder() {
+        Stream<Object> stringStream = Stream.builder()
+                .add("1")
+                .add("2")
+                .build();
     }
 
     private void streamToList() {
@@ -81,30 +98,48 @@ public class StreamDemo {
           Stream中间操作
          */
         //filter()，过滤
+        System.out.println("--filter:");
         memberNames.stream().filter(s -> s.startsWith("A"))
                 .forEach(System.out::println);
 
         //map()，转换
+        System.out.println("--map:");
         memberNames.stream().map(String::toUpperCase)
                 .forEach(System.out::println);
 
-        //sort(),排序
+        //flatMap，多层级扁平化转换
+        System.out.println("--flatMap:");
+        Stream<List<Integer>> intStream = Stream.of(Arrays.asList(1, 2, 3), Arrays.asList(4, 5), Arrays.asList(6, 7, 8));
+        intStream.flatMap(Collection::stream).forEach(System.out::println);
+
+        //sorted(),排序
+        System.out.println("--sorted:");
         memberNames.stream().sorted()
                 .forEach(System.out::println);
+
+        //peek(),生成一个包含原Stream所有元素的新Stream，同时提供一个消费函数，与原Stream并行执行
+        System.out.println("--peek:");
+        long totalMatched = memberNames.stream()
+                .peek(System.out::println)
+                .count();
+        System.out.println(totalMatched);
 
         /*
           Stream终端操作
          */
         //forEach()，遍历
+        System.out.println("--forEach:");
         memberNames.forEach(System.out::println);
 
         //collect()，收集
+        System.out.println("--collect:");
         List<String> memNamesInUppercase = memberNames.stream().sorted()
                 .map(String::toUpperCase)
                 .collect(Collectors.toList());
         System.out.print(memNamesInUppercase);
 
         //match()，匹配
+        System.out.println("--match:");
         boolean matchedResult = memberNames.stream()
                 .anyMatch(s -> s.startsWith("A"));
         System.out.println(matchedResult);
@@ -118,12 +153,14 @@ public class StreamDemo {
         System.out.println(matchedResult);
 
         //count()，总数
-        long totalMatched = memberNames.stream()
+        System.out.println("--count:");
+        long count = memberNames.stream()
                 .filter(s -> s.startsWith("A"))
                 .count();
-        System.out.println(totalMatched);
+        System.out.println(count);
 
         //reduce()，指定计算模型生成值
+        System.out.println("--reduce:");
         Optional<String> reduced = memberNames.stream()
                 .reduce((s1, s2) -> s1 + "#" + s2);
         reduced.ifPresent(System.out::println);
@@ -132,22 +169,30 @@ public class StreamDemo {
           条件操作
          */
         //anyMatch()，任意匹配
+        System.out.println("--anyMatch:");
         boolean matched = memberNames.stream()
                 .anyMatch(s -> s.startsWith("A"));
         System.out.println(matched);
 
         //findFirst()，首条
+        System.out.println("--findFirst:");
         String firstMatchedName = memberNames.stream()
                 .filter(s -> s.startsWith("L"))
                 .findFirst().get();
         System.out.println(firstMatchedName);
 
         //distinct()，去重
+        System.out.println("--distinct:");
         Collection<String> list = Arrays.asList("A", "B", "C", "D", "A", "B", "C");
         List<String> distinctElements = list.stream().distinct().collect(Collectors.toList());
         System.out.println(distinctElements);
 
+        //skip()，从第N位开始取数
+        System.out.println("--skip:");
+        IntStream.range(1, 100).skip(10).limit(10).forEach(System.out::println);
+
         //max()，最大值
+        System.out.println("--max:");
         Integer maxNumber = Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9)
                 .max(Comparator.comparing(Integer::valueOf))
                 .get();
@@ -158,6 +203,7 @@ public class StreamDemo {
         System.out.println("maxChar = " + maxChar);
 
         //min()，最小值
+        System.out.println("--min:");
         Integer minNumber = Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9)
                 .min(Comparator.comparing(Integer::valueOf))
                 .get();
@@ -171,7 +217,22 @@ public class StreamDemo {
         cars.add(new Car("Jeep", "Wrangler", 2011));
         cars.add(new Car("Dodge", "Avenger", 2010));
         cars.add(new Car("Buick", "Cascada", 2016));
+        cars.add(new Car("BMW", "BMW1", 2011));
+        cars.add(new Car("TSL", "TSL1", 2010));
+        cars.add(new Car("BYD", "BYDTang", 2016));
 
+        //groupingBy()，分组
+        System.out.println("--groupingBy:");
+        Map<Integer, List<Car>> groupCar = cars.stream().collect(Collectors.groupingBy(Car::getYear));
+        System.out.println(groupCar);
+
+        //partitioningBy()，分片
+        System.out.println("--partitioningBy:");
+        Map<Boolean, List<Car>> partitionCar = cars.stream().collect(Collectors.partitioningBy(c -> c.getYear() == 2016));
+        System.out.println(partitionCar);
+
+        //comparing(),比较
+        System.out.println("--comparing:");
         Comparator<Car> comparator = Comparator.comparing(Car::getYear);
 
         Car minObject = cars.stream().min(comparator).get();
@@ -224,6 +285,6 @@ public class StreamDemo {
 
     public static void main(String[] args) {
         StreamDemo streamDemo = new StreamDemo();
-        streamDemo.streamStr();
+        streamDemo.streamCore();
     }
 }
