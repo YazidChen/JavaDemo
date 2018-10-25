@@ -7,21 +7,11 @@ package com.yazid.demo.java.java.Collection;
 public class ArrayDemo {
 
     public static int findPivotIndex(int[] nums) {
-        if (nums.length == 0) {
-            return -1;
-        }
-        for (int index = 0; index < nums.length; index++) {
-            int leftSum = 0;
-            int rightSum = 0;
-            for (int l = 0; l < index; l++) {
-                leftSum += nums[l];
-            }
-            for (int r = 0; r < nums.length - 1 - index; r++) {
-                rightSum += nums[nums.length - 1 - r];
-            }
-            if (leftSum == rightSum) {
-                return index;
-            }
+        int sum = 0, leftsum = 0;
+        for (int x : nums) sum += x;
+        for (int i = 0; i < nums.length; ++i) {
+            if (leftsum == sum - leftsum - nums[i]) return i;
+            leftsum += nums[i];
         }
         return -1;
     }
