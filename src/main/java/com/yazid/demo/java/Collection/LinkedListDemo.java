@@ -1,4 +1,4 @@
-package com.yazid.demo.java.java.Collection;
+package com.yazid.demo.java.Collection;
 
 import java.util.Iterator;
 import java.util.LinkedList;

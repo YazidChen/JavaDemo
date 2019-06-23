@@ -1,4 +1,4 @@
-package com.yazid.demo.java.java8;
+package com.yazid.demo.java8;
 
 /**
  * @author YazidChen

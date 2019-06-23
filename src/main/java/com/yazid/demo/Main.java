@@ -1,4 +1,4 @@
-package com.yazid.demo.java;
+package com.yazid.demo;
 
 import java.time.Instant;
 import java.util.HashMap;

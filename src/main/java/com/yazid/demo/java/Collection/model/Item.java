@@ -1,4 +1,4 @@
-package com.yazid.demo.java.java.Collection.model;
+package com.yazid.demo.java.Collection.model;
 
 import java.util.Objects;
 

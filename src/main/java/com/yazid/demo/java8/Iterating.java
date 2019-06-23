@@ -1,6 +1,6 @@
-package com.yazid.demo.java.java8;
+package com.yazid.demo.java8;
 
-import com.yazid.demo.java.java8.model.Car;
+import com.yazid.demo.java8.model.Car;
 
 import java.util.*;
 import java.util.stream.Collectors;
