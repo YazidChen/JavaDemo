@@ -1,6 +1,6 @@
-package com.yazid.demo.java.Collection;
+package com.yazid.demo.java.collection;
 
-import com.yazid.demo.java.Collection.model.Item;
+import com.yazid.demo.java.collection.model.Item;
 
 import java.util.SortedSet;
 import java.util.TreeSet;

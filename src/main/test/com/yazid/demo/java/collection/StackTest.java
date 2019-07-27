@@ -1,4 +1,4 @@
-package com.yazid.demo.java.Collection;
+package com.yazid.demo.java.collection;
 
 import org.junit.jupiter.api.Test;
 
