@@ -1,4 +1,4 @@
-package com.yazid.demo.java.collection.model;
+package com.yazid.demo.java.collection.entity;
 
 import java.util.Objects;
 
@@ -28,8 +28,12 @@ public class Item implements Comparable<Item> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Item item = (Item) o;
         return partNumber == item.partNumber &&
                 Objects.equals(description, item.description);

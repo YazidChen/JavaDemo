@@ -31,7 +31,7 @@ public class Car {
     public String toString() {
         return "Car{" +
                 "make='" + make + '\'' +
-                ", model='" + model + '\'' +
+                ", entity='" + model + '\'' +
                 ", year=" + year +
                 '}';
     }
