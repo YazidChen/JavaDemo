@@ -16,7 +16,7 @@ public class FindNemo {
     private static void findNemo(List<String> names) {
         boolean found = false;
         for (String name : names) {
-            if (name.equals("Nemo")) {
+            if ("Nemo".equals(name)) {
                 found = true;
                 break;
             }
@@ -31,6 +31,7 @@ public class FindNemo {
 
     /**
      * 声明式格式
+     *
      * @param names
      */
     public static void findNemo1(List<String> names) {

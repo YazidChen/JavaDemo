@@ -28,8 +28,12 @@ public class A {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         A a1 = (A) o;
         return Objects.equals(a, a1.a) &&
                 Objects.equals(b, a1.b);
