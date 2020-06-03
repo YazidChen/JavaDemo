@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: java-demo
+  profiles:
+    active: dev
+
+server:
+  port: 8089
