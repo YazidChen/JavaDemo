@@ -1,4 +1,4 @@
-package com.yazid.demo.java.leetcode;
+package com.yazid.demo.leetcode;
 
 /**
  * @author YazidChen
