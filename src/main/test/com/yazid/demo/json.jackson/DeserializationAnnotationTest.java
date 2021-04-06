@@ -27,7 +27,9 @@ public class DeserializationAnnotationTest {
     public void whenDeserializingUsingJsonCreator() throws IOException {
 
         String json = "{\"id\":1,\"theName\":\"Yazid\"}";
-        CreatorEntity creatorEntity = new ObjectMapper().readerFor(CreatorEntity.class).readValue(json);
+        CreatorEntity creatorEntity = new ObjectMapper()
+                .readerFor(CreatorEntity.class)
+                .readValue(json);
         assertEquals("Yazid", creatorEntity.getName());
     }
 
@@ -71,6 +73,7 @@ public class DeserializationAnnotationTest {
 
     /**
      * JsonSetter 反序列化指定字段名
+     *
      * @throws IOException
      */
     @Test
@@ -103,4 +106,21 @@ public class DeserializationAnnotationTest {
 
         assertEquals("2021-03-31 23:56:59", df.format(event.getEventDate()));
     }
+
+    /**
+     * JsonAlias
+     * 反序列化字段对应多个规则
+     *
+     * @throws IOException
+     */
+    @Test
+    public void whenDeserializingUsingJsonAlias() throws IOException {
+        String json = "{\"fName\": \"John\", \"lastName\": \"Green\"}";
+        AliasEntity aliasEntity = new ObjectMapper()
+                .readerFor(AliasEntity.class)
+                .readValue(json);
+        assertEquals("John", aliasEntity.getFirstName());
+    }
+
+
 }

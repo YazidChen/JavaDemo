@@ -3,15 +3,15 @@ package com.yazid.demo.json.jackson;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.yazid.demo.json.jackson.entity.ExtendableEntity;
-import com.yazid.demo.json.jackson.entity.RawEntity;
-import com.yazid.demo.json.jackson.entity.UserEntity;
+import com.yazid.demo.json.jackson.entity.*;
 import com.yazid.demo.json.jackson.enums.TypeEnumWithValue;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Date;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -97,5 +97,89 @@ public class SerializationAnnotationTest {
 
         assertTrue(result.contains("Yazid"));
         assertTrue(result.contains("user"));
+    }
+
+    /**
+     * JsonIgnoreProperties
+     * 类级别注解，序列化排除部分字段
+     *
+     * @throws JsonProcessingException
+     */
+    @Test
+    public void whenSerializingUsingJsonIgnoreProperties()
+            throws JsonProcessingException {
+
+        IgnoreEntity ignoreEntity = new IgnoreEntity(1L, "Chen", "Yazid");
+
+        String result = new ObjectMapper()
+                .writeValueAsString(ignoreEntity);
+        System.out.println(result);
+
+        assertTrue(result.contains("Yazid"));
+        assertFalse(result.contains("\"id\""));
+    }
+
+    /**
+     * JsonIgnore
+     * 字段级别注解，序列化排除部分字段
+     *
+     * @throws JsonProcessingException
+     */
+    @Test
+    public void whenSerializingUsingJsonIgnore()
+            throws JsonProcessingException {
+
+        IgnoreEntity ignoreEntity = new IgnoreEntity(1L, "Chen", "Yazid");
+
+        String result = new ObjectMapper()
+                .writeValueAsString(ignoreEntity);
+        System.out.println(result);
+
+        assertTrue(result.contains("Yazid"));
+        assertFalse(result.contains("Chen"));
+        assertFalse(result.contains("\"id\""));
+    }
+
+    /**
+     * JsonIgnoreType
+     * 当前定义的字段类型的修饰字段不参与序列化
+     *
+     * @throws JsonProcessingException
+     * @throws ParseException
+     */
+    @Test
+    public void whenSerializingUsingJsonIgnoreType()
+            throws JsonProcessingException, ParseException {
+
+        IgnoreTypeEntity.Name name = new IgnoreTypeEntity.Name("Chen", "Yazid");
+        IgnoreTypeEntity user = new IgnoreTypeEntity(1L, name);
+
+        String result = new ObjectMapper()
+                .writeValueAsString(user);
+        System.out.println(result);
+
+        assertTrue(result.contains("1"));
+        assertFalse(result.contains("name"));
+        assertFalse(result.contains("Yazid"));
+    }
+
+    /**
+     * JsonInclude
+     * 可以起到排除empty，null作用
+     *
+     * @throws JsonProcessingException
+     */
+    @Test
+    public void whenSerializingUsingJsonInclude()
+            throws JsonProcessingException {
+
+        IncludeEntity includeEntity = new IncludeEntity(1L, null);
+
+        String result = new ObjectMapper()
+                .writeValueAsString(includeEntity);
+        System.out.println(result);
+
+        assertTrue(result.contains("1"));
+        assertFalse(result.contains("name"));
     }
 }
