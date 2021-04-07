@@ -25,11 +25,12 @@ public class DeserializationAnnotationTest {
      */
     @Test
     public void whenDeserializingUsingJsonCreator() throws IOException {
-
         String json = "{\"id\":1,\"theName\":\"Yazid\"}";
+
         CreatorEntity creatorEntity = new ObjectMapper()
                 .readerFor(CreatorEntity.class)
                 .readValue(json);
+
         assertEquals("Yazid", creatorEntity.getName());
     }
 
@@ -40,12 +41,13 @@ public class DeserializationAnnotationTest {
      */
     @Test
     public void whenDeserializingUsingJsonInject() throws IOException {
-
         String json = "{\"name\":\"Yazid\"}";
 
-        InjectableValues inject = new InjectableValues.Std()
+        InjectableValues inject = new InjectableValues
+                .Std()
                 .addValue(Long.class, 1L);
-        InjectEntity injectEntity = new ObjectMapper().reader(inject)
+        InjectEntity injectEntity = new ObjectMapper()
+                .reader(inject)
                 .forType(InjectEntity.class)
                 .readValue(json);
 
@@ -60,7 +62,6 @@ public class DeserializationAnnotationTest {
      */
     @Test
     public void whenDeserializingUsingJsonAnySetter() throws IOException {
-
         String json = "{\"name\":\"Yazid\",\"attr2\":\"val2\",\"attr1\":\"val1\"}";
 
         ExtendableEntity extendableEntity = new ObjectMapper()
@@ -78,7 +79,6 @@ public class DeserializationAnnotationTest {
      */
     @Test
     public void whenDeserializingUsingJsonSetter() throws IOException {
-
         String json = "{\"id\":\"1\",\"theName\":\"Yazid\"}";
 
         SetterEntity setterEntity = new ObjectMapper()
@@ -96,7 +96,6 @@ public class DeserializationAnnotationTest {
      */
     @Test
     public void whenDeserializingUsingJsonDeserialize() throws IOException {
-
         String json = "{\"name\":\"party\",\"eventDate\":\"2021-03-31 23:56:59\"}";
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -116,11 +115,30 @@ public class DeserializationAnnotationTest {
     @Test
     public void whenDeserializingUsingJsonAlias() throws IOException {
         String json = "{\"fName\": \"John\", \"lastName\": \"Green\"}";
+
         AliasEntity aliasEntity = new ObjectMapper()
                 .readerFor(AliasEntity.class)
                 .readValue(json);
+
         assertEquals("John", aliasEntity.getFirstName());
     }
 
+    /**
+     * JsonTypeInfo、JsonSubTypes、JsonTypeName
+     * 多态反序列化
+     *
+     * @throws IOException
+     */
+    @Test
+    public void whenDeserializingPolymorphic()
+            throws IOException {
+        String json = "{\"animal\":{\"name\":\"lacy\",\"type\":\"cat\",\"likesCream\":true,\"lives\":1}}";
 
+        ZooEntity zoo = new ObjectMapper()
+                .readerFor(ZooEntity.class)
+                .readValue(json);
+
+        assertEquals("lacy", zoo.getAnimal().getName());
+        assertEquals(ZooEntity.Cat.class, zoo.getAnimal().getClass());
+    }
 }
