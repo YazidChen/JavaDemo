@@ -8,10 +8,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,6 +72,29 @@ public class Jdk9to11Test {
         var copy2 = List.copyOf(list2);
 
         assertNotSame(list2, copy2);
+    }
+
+    /**
+     * Collection.toArray简化集合转换数组
+     */
+    @Test
+    public void testCollectionToArray() {
+        List<String> list = new ArrayList<>();
+        list.add("Yazid");
+        list.add("John");
+        list.add("Tom");
+
+        String[] before11Names = list.toArray(new String[list.size()]);
+        for (var name : before11Names) {
+            System.out.print(name);
+        }
+
+        System.out.println();
+
+        String[] names = list.toArray(String[]::new);
+        for (var name : names) {
+            System.out.print(name);
+        }
     }
 
     /**
@@ -184,5 +212,29 @@ public class Jdk9to11Test {
                         System.out.println("[FAILURE] Could not " + "verify " + uri);
                     }
                 });
+    }
+
+    /**
+     * Files.readString() 和 Files.writeString()
+     *
+     * @throws URISyntaxException
+     * @throws IOException
+     */
+    @Test
+    public void testFileReadStringWriteString() throws URISyntaxException, IOException {
+        URI txtFileUri = getClass()
+                .getClassLoader()
+                .getResource("javastack.txt")
+                .toURI();
+        String content = Files.readString(Path.of(txtFileUri), Charset.defaultCharset());
+        System.out.println(content);
+
+        String rootPath = Objects.requireNonNull(this.getClass().getResource("/")).getPath();
+        File file = new File(rootPath + "javastack3.txt");
+        if (!file.exists() && !file.createNewFile()) {
+            System.out.println("生成文件失败！");
+        }
+        Path path = Path.of(file.toURI());
+        Files.writeString(path, "Hello World!", Charset.defaultCharset(), StandardOpenOption.WRITE);
     }
 }
