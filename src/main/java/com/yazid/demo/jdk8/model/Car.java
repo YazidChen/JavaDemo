@@ -1,4 +1,4 @@
-package com.yazid.demo.java8.model;
+package com.yazid.demo.jdk8.model;
 
 /**
  * @author YazidChen

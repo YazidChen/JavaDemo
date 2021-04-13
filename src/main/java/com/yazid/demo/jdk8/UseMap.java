@@ -1,4 +1,4 @@
-package com.yazid.demo.java8;
+package com.yazid.demo.jdk8;
 
 import java.util.HashMap;
 import java.util.Map;
