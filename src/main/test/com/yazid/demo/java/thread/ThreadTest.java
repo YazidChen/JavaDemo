@@ -1,6 +1,10 @@
 package com.yazid.demo.java.thread;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.util.concurrent.*;
 
@@ -9,6 +13,29 @@ import java.util.concurrent.*;
  * @date 2020/02/12 0012 16:28
  */
 public class ThreadTest {
+    private static ThreadPoolExecutor executor;
+
+    @BeforeAll
+    public static void beforeConcurrent() {
+        if (executor == null) {
+            System.out.println("beforeConcurrent");
+            executor = new ThreadPoolExecutor(4, 8, 60, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(4));
+        }
+    }
+
+    @RepeatedTest(1000)
+    @Execution(ExecutionMode.CONCURRENT)
+    void concurrentTest() {
+        executor.execute(() -> {
+            try {
+                System.out.println("ThreadId:" + Thread.currentThread().getId() + "/ThreadName:" + Thread.currentThread().getName());
+                Thread.sleep(20);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
     /**
      * 创建线程
      */
@@ -60,4 +87,5 @@ public class ThreadTest {
             e.printStackTrace();
         }
     }
+
 }
